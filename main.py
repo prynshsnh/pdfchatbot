@@ -22,7 +22,7 @@ from my_pdf_lib import text_to_docs, parse_pdf
 from db_chat import user_message, bot_message
 
 # Initialize the Cohere API
-cohere_api_key = db.secrets.get(name="priyanshusinha")
+cohere_api_key = os.environ.get('priyanshusinha')
 
 st.title("Chat with research paper / clinical study data 🤖")
 st.info(
