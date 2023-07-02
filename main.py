@@ -1,42 +1,26 @@
-# Import the required libraries
-import databutton as db
 import streamlit as st
 from langchain.embeddings.cohere import CohereEmbeddings
 from langchain.llms import Cohere
 from langchain.prompts import PromptTemplate
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Qdrant
-from langchain.document_loaders import TextLoader
 import os
 import random
 import textwrap as tr
-# from pocketsphinx import LiveSpeech
-# import pyttsx3
 
-#engine = pyttsx3.init(driverName='espeak', debug=True)
 
-# Helper functions (You can access them via View Code page of the app)
 from my_pdf_lib import text_to_docs, parse_pdf
 from db_chat import user_message, bot_message
 
-# Initialize the Cohere API
 cohere_api_key = os.environ.get('priyanshusinha')
 
-st.title("Chat with research paper / clinical study data 🤖")
+st.title("T. M. Riddle's Diary 🪄")
 st.info(
-    "For your personal data! Powered by [cohere](https://cohere.com) + [LangChain](https://python.langchain.com/en/latest/index.html) + [Databutton](https://www.databutton.io) "
+    "Developed by [Priyanshu Sinha](https://priyanshusinha.online/), the boy who lifted 💪🏼."
 )
 
-
-# Initialize the speech recognition and text-to-speech engines
-#recognizer = sr.Recognizer()
-#engine = pyttsx3.init()
-
-# Loading files
 pages = None
-    # Upload the files
+
 uploaded_file = st.file_uploader(
     "**Upload a pdf file :**",
     type=["pdf"],
@@ -46,8 +30,8 @@ if uploaded_file:
     pages = text_to_docs(doc)
 
 page_holder = st.empty()
-# Create our own prompt template
-prompt_template = """Role: Medical Assistant that is an expert in reading Clinical study papers and documentation
+
+prompt_template = """Role: Technical Assistant that is an expert in reading research papers and documentation
 
 Text: {context}
 
@@ -60,14 +44,11 @@ PROMPT = PromptTemplate(
 )
 chain_type_kwargs = {"prompt": PROMPT}
 
-# Bot UI dump
-# Session State Initiation
 prompt = st.session_state.get("prompt", None)
 
 if prompt is None:
     prompt = [{"role": "system", "content": prompt_template}]
 
-# If we have a message history, let's display it
 for message in prompt:
     if message["role"] == "user":
         user_message(message["content"])
@@ -75,12 +56,6 @@ for message in prompt:
         bot_message(message["content"], bot_name="Multilingual Personal Chat Bot")
 
 if pages:
-    # if uploaded_file.name.endswith(".txt"):
-
-    # else:
-    #     doc = parse_pdf(uploaded_file)
-    # pages = text_to_docs(doc)
-
     with page_holder.expander("File Content", expanded=False):
         pages
     embeddings = CohereEmbeddings(
@@ -115,12 +90,10 @@ if pages:
 
         answer = qa({"query": question})
         result = answer["result"].replace("\n", "").replace("Answer:", "")
-        # with st.expander("Latest Content Source", expanded=False):
-        #     sources = answer["source_documents"]
-        # Update
+
         with st.spinner("Loading response .."):
             botmsg.update(result)
-        # Add
+
         prompt.append({"role": "assistant", "content": result})
 
     st.session_state["prompt"] = prompt
