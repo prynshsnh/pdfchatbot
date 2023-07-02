@@ -53,7 +53,7 @@ for message in prompt:
     if message["role"] == "user":
         user_message(message["content"])
     elif message["role"] == "assistant":
-        bot_message(message["content"], bot_name="Multilingual Personal Chat Bot")
+        bot_message(message["content"], bot_name="Tom Riddle")
 
 if pages:
     with page_holder.expander("File Content", expanded=False):
@@ -68,12 +68,13 @@ if pages:
         collection_name="my_documents",
         distance_func="Dot",
     )
+    col1, col2 = st.columns(2)
     messages_container = st.container()
-    question = st.text_input(
+    question = col1.text_input(
         "", placeholder="Type your query here", label_visibility="collapsed"
     )
 
-    if st.button("Run", type="secondary"):
+    if col2.button("Run", type="secondary"):
         prompt.append({"role": "user", "content": question})
         chain_type_kwargs = {"prompt": PROMPT}
         with messages_container:
