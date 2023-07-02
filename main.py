@@ -45,8 +45,6 @@ if uploaded_file:
     doc = parse_pdf(uploaded_file)
     pages = text_to_docs(doc)
 
-voice_input = st.button("Voice Input")
-
 page_holder = st.empty()
 # Create our own prompt template
 prompt_template = """Role: Medical Assistant that is an expert in reading Clinical study papers and documentation
