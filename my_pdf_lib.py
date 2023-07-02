@@ -1,19 +1,11 @@
-import databutton as db
-import streamlit as st
 
 import re
-import time
 from io import BytesIO
-from typing import Any, Dict, List
-import pickle
+from typing import List
 
 from langchain.docstore.document import Document
-from langchain.document_loaders import PyPDFLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores.faiss import FAISS
 from pypdf import PdfReader
-import faiss
 
 
 def parse_pdf(file: BytesIO) -> List[str]:
@@ -61,43 +53,3 @@ def text_to_docs(text: str) -> List[Document]:
             doc.metadata["source"] = f"{doc.metadata['page']}-{doc.metadata['chunk']}"
             doc_chunks.append(doc)
     return doc_chunks
-
-
-def docs_to_index(docs, openai_api_key):
-    index = FAISS.from_documents(
-        docs, OpenAIEmbeddings(openai_api_key=openai_api_key)
-    )  # Create a searchable index of the chunks
-
-    return index
-
-
-def get_index_for_pdf(pdf_files, openai_api_key):
-    documents = []
-    for pdf_file in pdf_files:
-        text = parse_pdf(BytesIO(pdf_file.getvalue()))  # Extract text from the pdf
-        documents = documents + text_to_docs(text)  # Divide the text up into chunks
-
-    index = docs_to_index(documents, openai_api_key)
-
-    return index
-
-
-def store_index_in_db(index, name):
-    faiss.write_index(index.index, "docs.index")
-    # Open the file and dump to Databutton storage
-    with open("docs.index", "rb") as file:
-        db.storage.binary.put(f"{name}.index", file.read())
-        index.index = None
-        db.storage.binary.put(f"{name}.pkl", pickle.dumps(index))
-
-
-def load_index_from_db(index_name):
-    findex = db.storage.binary.get(f"{index_name}.index")
-
-    with open("docs.index", "wb") as file:
-        file.write(findex)
-    index = faiss.read_index("docs.index")
-    VectorDB = pickle.loads(db.storage.binary.get(f"{index_name}.pkl"))
-    VectorDB.index = index
-
-    return VectorDB

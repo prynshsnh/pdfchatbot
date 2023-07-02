@@ -38,8 +38,8 @@ st.info(
 pages = None
     # Upload the files
 uploaded_file = st.file_uploader(
-    "**Upload a pdf or txt file :**",
-    type=["pdf", "txt"],
+    "**Upload a pdf file :**",
+    type=["pdf"],
 )
 if uploaded_file:
     doc = parse_pdf(uploaded_file)
