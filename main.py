@@ -5,8 +5,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Qdrant
 import os
-import random
-import textwrap as tr
+import time
 
 
 from my_pdf_lib import text_to_docs, parse_pdf
@@ -93,6 +92,7 @@ if pages:
         result = answer["result"].replace("\n", "").replace("Answer:", "")
 
         with st.spinner("Loading response ..."):
+            time.sleep(3)
             botmsg.update(result)
 
         prompt.append({"role": "assistant", "content": result})
