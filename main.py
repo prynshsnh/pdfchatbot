@@ -74,7 +74,7 @@ if pages:
         "", placeholder="Type your query here", label_visibility="collapsed"
     )
 
-    if question:
+    if question or col2.button("Run", type="secondary"):
         prompt.append({"role": "user", "content": question})
         chain_type_kwargs = {"prompt": PROMPT}
         with messages_container:
