@@ -70,7 +70,7 @@ if pages:
     )
     messages_container = st.container()
     question = st.text_input(
-        "", placeholder="Type your message here", label_visibility="collapsed"
+        "", placeholder="Type your query here", label_visibility="collapsed"
     )
 
     if st.button("Run", type="secondary"):
@@ -78,7 +78,7 @@ if pages:
         chain_type_kwargs = {"prompt": PROMPT}
         with messages_container:
             user_message(question)
-            botmsg = bot_message("...", bot_name="Multilingual Personal Chat Bot")
+            botmsg = bot_message("...", bot_name="Tom Riddle")
 
         qa = RetrievalQA.from_chain_type(
             llm=Cohere(model="command", temperature=0, cohere_api_key=cohere_api_key),
@@ -91,7 +91,7 @@ if pages:
         answer = qa({"query": question})
         result = answer["result"].replace("\n", "").replace("Answer:", "")
 
-        with st.spinner("Loading response .."):
+        with st.spinner("Loading response ..."):
             botmsg.update(result)
 
         prompt.append({"role": "assistant", "content": result})
