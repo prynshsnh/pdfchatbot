@@ -68,7 +68,7 @@ if pages:
         collection_name="my_documents",
         distance_func="Dot",
     )
-    col1, col2 = st.columns([0.9, 0.1])
+    col1, col2 = st.columns([0.8, 0.2])
     messages_container = st.container()
     question = col1.text_input(
         "", placeholder="Type your query here", label_visibility="collapsed"
