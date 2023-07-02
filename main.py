@@ -67,13 +67,13 @@ if pages:
         collection_name="my_documents",
         distance_func="Dot",
     )
-    col1, col2 = st.columns(2)
+    
     messages_container = st.container()
-    question = col1.text_input(
+    question = st.text_input(
         "", placeholder="Type your query here", label_visibility="collapsed"
     )
 
-    if question or col2.button("Run", type="secondary"):
+    if question:
         prompt.append({"role": "user", "content": question})
         chain_type_kwargs = {"prompt": PROMPT}
         with messages_container:
