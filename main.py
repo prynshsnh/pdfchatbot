@@ -70,7 +70,7 @@ if pages:
     
     messages_container = st.container()
     question = st.text_input(
-        "", placeholder="Type your query here", label_visibility="collapsed"
+        "", placeholder="Type your query 🙋🏻‍♂️ here and press Enter ⎆ to proceed", label_visibility="collapsed"
     )
 
     if question:
