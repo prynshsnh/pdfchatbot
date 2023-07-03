@@ -13,6 +13,11 @@ from db_chat import user_message, bot_message
 
 cohere_api_key = os.environ.get('priyanshusinha')
 
+st.set_page_config(
+        page_title="T. M. Riddle's Diary - A PDF Chatbot",
+        page_icon="robot_face",
+)
+
 st.title("T. M. Riddle's Diary 🪄")
 st.info(
     "Developed by [Priyanshu Sinha](https://priyanshusinha.online/), the boy who lifted 💪🏼."
